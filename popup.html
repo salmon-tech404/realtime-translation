@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Realtime Translation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lobster&family=Oleo+Script:wght@400;700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./popup.css" />
+  </head>
+  <body>
+    <!-- Header bar -->
+    <div class="header">
+      <!-- header content & theme switcher -->
+      <div class="logo-row">
+        <div>
+          <h3 class="logo-text">I'm comtor</h3>
+          <p class="logo-sub">Enjoy real-time translation 🥰</p>
+        </div>
+        <div class="theme-switch-wrap">
+          <span class="theme-icon">🌙</span>
+          <label class="switch">
+            <input type="checkbox" id="themeToggle" />
+            <span class="slider"></span>
+          </label>
+          <span class="theme-icon">☀️</span>
+        </div>
+      </div>
+
+      <!-- active status -->
+      <div class="status-badge inactive" id="statusBadge">
+        <span class="status-dot"></span>
+        <p id="statusText">Chưa kích hoạt</p>
+      </div>
+    </div>
+    <!-- Body -->
+    <div class="body" id="mainBody">
+      <!-- Provider & API Key -->
+      <div class="">
+        <div class="section-label">AI Provider</div>
+        <div class="api-selection">
+          <div class="provider-selection">
+            <button class="provider-button active" data-provider="deepseek">
+              🐋 DeepSeek
+            </button>
+            <span class="provider-value">Rẻ hơn</span>
+          </div>
+          <div class="provider-selection">
+            <button class="provider-button " data-provider="claude">
+              🤖 Claude
+            </button>
+            <span class="provider-value">Anthropic</span>
+          </div>
+          <div class="provider-selection">
+            <button class="provider-button " data-provider="more">
+              + Thêm
+            </button>
+            <span class="provider-value">Sau</span>
+          </div>
+        </div>
+        <div class="section-label" id="apiKeyLabel">DeepSeek API Key</div>
+        <div class="api-key-wrap">
+          <input
+            type="password"
+            class="api-key-input"
+            id="apiKey"
+            placeholder="sk-..."
+          />
+          <button class="toggle-key" id="toggleKey" title="hide/display key">
+            <svg
+              id="eyeShow"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="display: none"
+            >
+              <path
+                d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"
+              />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            <svg
+              id="eyeHide"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"
+              />
+              <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" />
+              <path
+                d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"
+              />
+              <path d="m2 2 20 20" />
+            </svg>
+          </button>
+        </div>
+        <div class="api-key-help" id="apiKeyHelp"></div>
+      </div>
+      <!-- Language Selection -->
+      <div class="">
+        <div class="section-label">Ngôn ngữ</div>
+        <div class="lang-compare-grid">
+          <div class="setting-item">
+            <label>Ngôn ngữ nhận</label>
+            <select name="ngôn ngữ nhận" id="sourcelang" class="setting-select">
+              <option value="jp-JP">日本語</option>
+              <option value="vi-VN">Tiếng Việt</option>
+              <option value="en-US">English</option>
+            </select>
+          </div>
+
+          <button class="swap-btn" id="swapLang" title="Đổi chiều">⇄</button>
+          <div class="setting-item">
+            <label>Ngôn ngữ dịch</label>
+            <select name="ngôn ngữ dịch" id="targetlang" class="setting-select">
+              <option value="vi-VN">Tiếng Việt</option>
+              <option value="jp-JP">日本語</option>
+              <option value="en-US">English</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <!-- Subtitle Position  -->
+      <div class="settings-grid">
+        <div class="setting-item">
+          <label>Vị trí subtitle</label>
+          <select class="setting-select" id="subtitlePos">
+            <option value="bottom">Phía dưới</option>
+            <option value="top">Phía trên</option>
+            <option value="center">Giữa màn hình</option>
+          </select>
+        </div>
+      </div>
+      <!-- Display Options -->
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-tittle">Hiển thị nguyên bản</div>
+          <div class="toggle-desc">Giữ lại text gốc bên trên bản dịch</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="showOriginal" checked />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <!-- Start/Stop button -->
+      <button class="btn-main btn-start" id="toggleBtn">🎙Bắt đầu dịch</button>
+      <p id="errorMsg" style="color: var(--red); font-size: 12px; margin-top: 4px;"></p>
+      <div class="divider"></div>
+      <!-- Recent translations -->
+      <div class="recent-section">
+        <div class="section-label">Bản dịch gần đây</div>
+        <div class="recent-list" id="recentList">
+          <div class="empty-state">Chưa có bản dịch nào</div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <span class="footer-link" id="clearBtn">🗑 Xóa lịch sử</span>
+      <a
+        href="https://www.linkedin.com/in/vu-khac-diep-495652227"
+        target="_blank"
+        rel="noopener"
+        class="footer-salmon"
+        >Powered by Salmon</a
+      >
+      <span class="footer-link" id="helpBtn">❓ Hướng dẫn</span>
+    </div>
+    <div class="footer-arch-bar">
+      <a
+        href="docs/architecture-overview.html"
+        target="_blank"
+        rel="noopener"
+        class="footer-arch"
+        >📐 System Architecture Overview</a
+      >
+    </div>
+    <script src="./src/js/popup.js" type="module"></script>
+  </body>
+  
+</html>
