@@ -1,9 +1,17 @@
 // =============================================================
-// File xử lý UI chung (theme, eye toggle, provider selection)
+// File xử lý UI chung (theme, eye toggle, provider selection,...)
 // =============================================================
 import { PROVIDERS } from "../provider/providers.js";
 import { loadState, saveState } from "../state/state.js";
 import { startTranslation } from "./translator.js";
+import { startAudio, stopAudio } from "./audioManager.js";
+import {
+  saveToHistory,
+  loadHistory,
+  clearHistory,
+  renderHistory,
+} from "./history.js";
+
 //
 //
 // =================== START TRANSLATION ===================
@@ -91,6 +99,7 @@ document.getElementById("showOriginal").addEventListener("change", (e) => {
 document.getElementById("subtitlePos").addEventListener("change", (e) => {
   saveState({ subtitlePos: e.target.value });
 });
+
 //
 //
 // ===================LOAD STATE & INIT UI===================
@@ -110,32 +119,77 @@ document
 document.getElementById("apiKey").value =
   state[`${state.provider}ApiKey`] ?? "";
 
+// Sync label & help text theo provider đang active
+const activeProvider = PROVIDERS[state.provider];
+if (activeProvider) {
+  document.getElementById("apiKeyLabel").textContent =
+    `${activeProvider.name} API Key`;
+  document.getElementById("apiKeyHelp").innerHTML =
+    `${activeProvider.helpText} <a href="${activeProvider.helpUrl}" target="_blank">${activeProvider.helpUrlText}</a> · ${activeProvider.pricing}`;
+}
+
 document.getElementById("sourcelang").value = state.sourcelang;
 document.getElementById("targetlang").value = state.targetlang;
 document.getElementById("showOriginal").checked = state.showOriginal;
-//
-//
-// =================== START TRANSLATION ===================
-//
-//
+
+// ==============================VERSION 2.0=========================================
+// Version 2.0: load history khi popup mở
+const initialHistory = await loadHistory();
+renderHistory(initialHistory);
+
+document.getElementById("clearBtn").addEventListener("click", async () => {
+  await clearHistory();
+  renderHistory([]);
+});
+
 let isRunning = false;
+
 document.getElementById("toggleBtn").addEventListener("click", async () => {
   const errorMsg = document.getElementById("errorMsg");
   const btn = document.getElementById("toggleBtn");
 
+  // ── STOP ──────────────────────────────────────────────
   if (isRunning) {
     isRunning = false;
-    btn.textContent = "🎙 Bắt đầu dịch";
+    stopAudio();
+    chrome.runtime.sendMessage({ type: "STOP" });
+    btn.textContent = "🎙Bắt đầu dịch";
     btn.classList.remove("btn-stop");
     document.getElementById("statusBadge").className = "status-badge inactive";
     document.getElementById("statusText").textContent = "Chưa kích hoạt";
     return;
   }
 
+  // ── VALIDATE ───────────────────────────────────────────
   errorMsg.textContent = "";
-  const result = await startTranslation(state);
-  if (!result.ok) {
-    errorMsg.textContent = result.message;
+  const validation = await startTranslation(state);
+  if (!validation.ok) {
+    errorMsg.textContent = validation.message;
+    return;
+  }
+
+  // ── LẤY MEET TAB ID TỪ BACKGROUND ────────────────────
+  const { ok, message } = await chrome.runtime.sendMessage({ type: "START" });
+  if (!ok) {
+    errorMsg.textContent = message;
+    return;
+  }
+
+  // ── START AUDIO ────────────────────────────────────────
+  const audioResult = await startAudio(state, async (result) => {
+    const history = await saveToHistory(result.original, result.translated);
+    renderHistory(history);
+    chrome.runtime.sendMessage({
+      type: "SHOW_SUBTITLE",
+      original: result.original,
+      translated: result.translated,
+      showOriginal: state.showOriginal,
+      subtitlePos: state.subtitlePos,
+    });
+  });
+
+  if (!audioResult.ok) {
+    errorMsg.textContent = audioResult.message;
     return;
   }
 

@@ -2,12 +2,11 @@
   --bg: #0d0f14;
   --surface: #161b24;
   --surface2: #1e2535;
-  /* --border: #2a3347; */
   --border: #495057;
   --accent: #4f8ef7;
   --accent2: #e8547a;
   --text: #e8edf5;
-  --text2: #7a8ba8;
+  --text2: #ced4da;
   --green: #3ecf8e;
   --red: #f03e3e;
   --header-bg: linear-gradient(135deg, #1a2540 0%, #0d1420 100%);
@@ -58,7 +57,7 @@ body {
 /* header styles */
 .header {
   background: var(--header-bg);
-  padding: 16px 18px 14px;
+  padding: 0 18px 6px 18px;
   border-bottom: 1px solid var(--border);
   position: relative;
   overflow: hidden;
@@ -183,10 +182,10 @@ input:checked + .slider::before {
 
 /* ======================BODY============================= */
 .body {
-  padding: 14px 16px;
+  padding: 4px 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 /* AI Provider */
 .section-label {
@@ -247,6 +246,11 @@ input:checked + .slider::before {
 .api-key-wrap {
   position: relative;
 }
+
+.api-key-help a {
+  color: var(--text2);
+}
+
 .api-key-input {
   width: 100%;
   padding: 8px 36px 8px 12px;
@@ -263,7 +267,7 @@ input:checked + .slider::before {
   border-color: var(--accent);
 }
 .api-key-input::placeholder {
-  color: var(--text2);
+  color: #adb5bd;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 .toggle-key {
@@ -442,6 +446,42 @@ input:checked + .slider::before {
 .recent-list::-webkit-scrollbar-thumb {
   background: var(--border);
   border-radius: 3px;
+}
+
+/* Mic Permission Switch */
+.mic-slider {
+  background-color: var(--red);
+}
+input:checked + .mic-slider {
+  background-color: var(--green);
+}
+
+/* Version 2.0: History items */
+.history-item {
+  background: var(--surface);
+  border-left: 3px solid var(--primary, #4f8ef7);
+  border-radius: 6px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.history-original {
+  font-size: 11px;
+  color: var(--text2);
+  line-height: 1.4;
+}
+.history-translated {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 500;
+  line-height: 1.4;
+}
+.empty-state {
+  font-size: 12px;
+  color: var(--text2);
+  text-align: center;
+  padding: 16px 0;
 }
 /* ======================BODY============================= */
 

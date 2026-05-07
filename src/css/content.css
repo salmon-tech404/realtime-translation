@@ -1,0 +1,54 @@
+/* =============================================================
+   content.css — Version 2.0
+   Subtitle overlay hiển thị trên Google Meet
+   ============================================================= */
+
+#imcomtor-subtitle {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999999;
+  max-width: 80%;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.78);
+  border-radius: 10px;
+  padding: 10px 24px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+#imcomtor-subtitle.imcomtor-visible {
+  opacity: 1;
+}
+
+/* ── Vị trí subtitle — Version 2.0 ─────────────────────────── */
+#imcomtor-subtitle.imcomtor-pos-bottom {
+  bottom: 80px;
+}
+
+#imcomtor-subtitle.imcomtor-pos-top {
+  top: 80px;
+}
+
+#imcomtor-subtitle.imcomtor-pos-center {
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ── Text styles ─────────────────────────────────────────────── */
+.imcomtor-original {
+  font-size: 13px;
+  color: #bbb;
+  margin-bottom: 4px;
+  font-family: sans-serif;
+  line-height: 1.4;
+}
+
+.imcomtor-translated {
+  font-size: 19px;
+  color: #ffffff;
+  font-weight: 600;
+  font-family: sans-serif;
+  line-height: 1.5;
+}

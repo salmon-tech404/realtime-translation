@@ -4,6 +4,7 @@ const DEFAULT_STATE = {
   provider: "deepseek",
   deepseekApiKey: "",
   claudeApiKey: "",
+  geminiApiKey: "", //ver-2.0
   sourcelang: "",
   targetlang: "",
   showOriginal: true,

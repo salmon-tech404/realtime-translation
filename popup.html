@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lobster&family=Oleo+Script:wght@400;700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./popup.css" />
+    <link rel="stylesheet" href="./src/css/popup.css" />
   </head>
   <body>
     <!-- Header bar -->
@@ -39,10 +39,16 @@
     </div>
     <!-- Body -->
     <div class="body" id="mainBody">
-      <!-- Provider & API Key -->
+      <!-- Provider & API Keys -->
       <div class="">
         <div class="section-label">AI Provider</div>
-        <div class="api-selection">
+        <div class="api-selection" style="overflow-x: auto; flex-wrap: nowrap;">
+          <div class="provider-selection">
+            <button class="provider-button" data-provider="gemini">
+              ✨ Gemini
+            </button>
+            <span class="provider-value">(Ưu tiên)</span>
+          </div>
           <div class="provider-selection">
             <button class="provider-button active" data-provider="deepseek">
               🐋 DeepSeek
@@ -68,7 +74,7 @@
             type="password"
             class="api-key-input"
             id="apiKey"
-            placeholder="sk-..."
+            placeholder="sk-....."
           />
           <button class="toggle-key" id="toggleKey" title="hide/display key">
             <svg
@@ -113,6 +119,7 @@
           </button>
         </div>
         <div class="api-key-help" id="apiKeyHelp"></div>
+
       </div>
       <!-- Language Selection -->
       <div class="">
@@ -121,7 +128,7 @@
           <div class="setting-item">
             <label>Ngôn ngữ nhận</label>
             <select name="ngôn ngữ nhận" id="sourcelang" class="setting-select">
-              <option value="jp-JP">日本語</option>
+              <option value="ja-JP">日本語</option>
               <option value="vi-VN">Tiếng Việt</option>
               <option value="en-US">English</option>
             </select>
@@ -132,7 +139,7 @@
             <label>Ngôn ngữ dịch</label>
             <select name="ngôn ngữ dịch" id="targetlang" class="setting-select">
               <option value="vi-VN">Tiếng Việt</option>
-              <option value="jp-JP">日本語</option>
+              <option value="ja-JP">日本語</option>
               <option value="en-US">English</option>
             </select>
           </div>
@@ -160,6 +167,7 @@
           <span class="slider"></span>
         </label>
       </div>
+      <!-- TODO: Mic capture — cần implement qua content.js inject vào Meet tab -->
       <!-- Start/Stop button -->
       <button class="btn-main btn-start" id="toggleBtn">🎙Bắt đầu dịch</button>
       <p id="errorMsg" style="color: var(--red); font-size: 12px; margin-top: 4px;"></p>

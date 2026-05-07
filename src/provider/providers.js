@@ -1,4 +1,12 @@
 export const PROVIDERS = {
+  gemini: {
+    name: "✨ Gemini",
+    label: "Google",
+    helpText: "Lấy key tại",
+    helpUrl: "https://aistudio.google.com/apikey",
+    helpUrlText: "aistudio.google.com",
+    pricing: "nạp credit ít nhất 300k VND (~$12) để dùng",
+  },
   deepseek: {
     name: "🐋 DeepSeek",
     label: "Rẻ hơn",

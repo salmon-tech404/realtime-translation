@@ -11,6 +11,7 @@
 
   "permissions": [
     "activeTab",
+    "tabs",
     "storage",
     "scripting",
     "sidePanel",
@@ -20,7 +21,8 @@
     "https://meet.google.com/*",
     "https://api.openai.com/*",
     "https://api.deepseek.com/*",
-    "https://api.anthropic.com/*"
+    "https://api.anthropic.com/*",
+    "https://generativelanguage.googleapis.com/*"
   ],
   "content_scripts": [
     {
